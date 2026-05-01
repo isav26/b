@@ -59,7 +59,7 @@ When people talk about traditional Rajasthani bangles, Jaipur is often the place
 
 Even now, lac bangles work in two ways at once.
 
-They can be worn as part of bridal and festive dressing, but they also work as statement accessories with contemporary outfits. Their appeal comes from color, texture, and the fact that handmade objects still feel more meaningful than generic products.
+They can be worn as part of bridal and festive dressing, but they also work as statement accessories with contemporary outfits. Their appeal comes from color, texture, and the fact that handmade objects still feel more meaningful than generic products. 
 
 ---
 
