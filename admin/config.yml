@@ -1,0 +1,49 @@
+local_backend: true
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/public/images/uploads"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    label_singular: "Post"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { 
+          label: "Category", 
+          name: "category", 
+          widget: "select", 
+          options: ["Tech", "Lifestyle", "Tutorials", "News"],
+          default: "Tech" 
+        }
+      - { 
+          label: "Related Posts", 
+          name: "related_posts", 
+          widget: "relation", 
+          collection: "blog", 
+          search_fields: ["title"], 
+          value_field: "{{slug}}", 
+          display_fields: ["title"], 
+          multiple: true, 
+          required: false 
+        }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Summary", name: "description", widget: "text" }
+      - { label: "Tags", name: "tags", widget: "list", default: ["blog"] }
+      - { 
+          label: "Body", 
+          name: "body", 
+          widget: "markdown", 
+          minimal_main: false,
+          buttons: ["bold", "italic", "code", "link", "heading-one", "heading-two", "quote", "bulleted-list", "numbered-list"],
+          editor_components: ["image", "code-block"]
+        }
