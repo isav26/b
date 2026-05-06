@@ -3,7 +3,7 @@ title: "Lifestyle Trends 2026 India: How Smart Health, Premium Choices, and Bett
 date: 2026-05-06
 category: Lifestyle
 image: /public/images/uploads/owu7b1dl/office-collab.avif
-description: A long-form, SEO-friendly blog on the biggest lifestyle trends shaping Indian daily life in 2026, from smart health to premium choices and better homes.
+description: A thought on the biggest lifestyle trends shaping Indian daily life in 2026, from smart health to premium choices and better homes.
 tags:
   - blog
   - lifestyle trends 2026 india
