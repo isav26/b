@@ -73,7 +73,7 @@ Not blindly expensive.
 
 Just better.
 
-People are becoming more comfortable paying extra for products and services that feel reliable, durable, hygienic, and worth repeating. Coverage around India’s premiumisation story says this trend is now visible across fashion, home products, appliances, and broader consumption behaviour.[web:142][web:197]
+People are becoming more comfortable paying extra for products and services that feel reliable, durable, hygienic, and worth repeating. Coverage around India’s premiumisation story says this trend is now visible across fashion, home products, appliances, and broader consumption behaviour.
 
 ![festival shopping moment](/public/images/uploads/owu7b1dl/festival-shopping.avif)
 
