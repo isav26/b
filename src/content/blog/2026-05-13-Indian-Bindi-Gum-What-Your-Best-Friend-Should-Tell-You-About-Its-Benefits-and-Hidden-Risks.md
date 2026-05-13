@@ -186,9 +186,6 @@ If you are shopping online, reading reviews plus such labels is much safer than 
 
 <a href="https://amzn.to/4uO4dZC" target="_blank" rel="noopener noreferrer">Browse PTBP-free or hypoallergenic bindis</a> 
 
-
-![Safer alternative options placeholder](/public/images/uploads/p9vN2mRk9/alternatives.avif)
-
 ---
 
 ## 6: If You Love Your Bindi, Do This Much for Your Skin
