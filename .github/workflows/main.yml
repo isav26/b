@@ -26,7 +26,7 @@ jobs:
             const rootDir = './'; 
             const pageSize = 100;
             
-            // 1. Collect year directories
+            // 1. Collect 4-digit year directories
             const years = fs.readdirSync(rootDir)
               .filter(file => /^\d{4}$/.test(file) && fs.statSync(path.join(rootDir, file)).isDirectory());
 
@@ -35,6 +35,10 @@ jobs:
             // 2. Extract dates from YAML frontmatter in each index.md
             years.forEach(year => {
               const yearPath = path.join(rootDir, year);
+              
+              // Get the 2-digit representation of the year (e.g., "2026" -> "26")
+              const shortYear = year.slice(-2);
+
               const uuids = fs.readdirSync(yearPath)
                 .filter(file => fs.statSync(path.join(yearPath, file)).isDirectory());
               
@@ -44,18 +48,18 @@ jobs:
                 if (fs.existsSync(indexPath)) {
                   const content = fs.readFileSync(indexPath, 'utf8');
                   
-                  // Regex matches standard YAML format "date: YYYY-MM-DD" or "date: 'YYYY-MM-DD'"
-                  const dateMatch = content.match(/^date:\s*["']?([\d{4}-\d{2}-\d{2}])["']?/m);
+                  // Cleaned up regex to correctly parse standard YAML formatting
+                  const dateMatch = content.match(/^date:\s*["']?(\d{4}-\d{2}-\d{2})["']?/m);
                   
                   if (dateMatch && dateMatch[1]) {
                     blogList.push({
-                      uuid: uuid,
+                      slug: `${shortYear}/${uuid}`,
                       date: dateMatch[1].trim()
                     });
                   } else {
                     // Fallback to year folder start date if metadata is missing
                     blogList.push({
-                      uuid: uuid,
+                      slug: `${shortYear}/${uuid}`,
                       date: `${year}-01-01`
                     });
                   }
@@ -66,8 +70,8 @@ jobs:
             // 3. Sort chronologically (Newest items first)
             blogList.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            // Extract sorted UUID strings array
-            const sortedUuids = blogList.map(item => item.uuid);
+            // Extract sorted tracking strings array matching "26/uuid"
+            const sortedSlugs = blogList.map(item => item.slug);
 
             // 4. Clean up old blog_*.json arrays
             const existingFiles = fs.readdirSync(rootDir);
@@ -77,11 +81,11 @@ jobs:
               }
             });
 
-            // 5. Output paginated raw array files [uuid1, uuid2, ...]
-            for (let i = 0; i < sortedUuids.length; i += pageSize) {
+            // 5. Output paginated raw array files ["26/uuid1", "26/uuid2", ...]
+            for (let i = 0; i < sortedSlugs.length; i += pageSize) {
               const pageNum = Math.floor(i / pageSize) + 1;
               const fileName = `blog_${String(pageNum).padStart(5, '0')}.json`;
-              const pageData = sortedUuids.slice(i, i + pageSize);
+              const pageData = sortedSlugs.slice(i, i + pageSize);
               
               fs.writeFileSync(fileName, JSON.stringify(pageData, null, 2));
               console.log(`Created ${fileName} with ${pageData.length} entries.`);
