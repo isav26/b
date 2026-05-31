@@ -1,5 +1,5 @@
 ---
-title: "Indian Bindi Gum: What Your Best Friend Should Tell You About Its Benefits and Hidden Risks"
+title: Indian Bindi Gum: What Your Best Friend Should Tell You About Its Benefits and Hidden Risks
 date: 2026-05-13
 category: Beauty & Health
 image: hero.avif
