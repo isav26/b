@@ -226,4 +226,4 @@ That is why this topic matters.
 
 It is not only about trends.
 
-It is about the new shape of Indian aspiration.[web:197][web:200][web:142]
+It is about the new shape of Indian aspiration.
