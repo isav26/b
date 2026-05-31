@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/content/blog/**'
+      - '202[0-9]/**'
 
 jobs:
   build:
@@ -23,30 +23,65 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const blogDir = 'src/content/blog';
-            const outputDir = './'; // Files will be created in root
+            const rootDir = './'; 
             const pageSize = 100;
             
-            // 1. Get and sort filenames (Latest to Oldest)
-            const files = fs.readdirSync(blogDir)
-              .filter(file => file.endsWith('.md'))
-              .sort()
-              .reverse()
-              .map(file => file.replace(/\.md$/, ''));
+            // 1. Collect year directories
+            const years = fs.readdirSync(rootDir)
+              .filter(file => /^\d{4}$/.test(file) && fs.statSync(path.join(rootDir, file)).isDirectory());
 
-            // 2. Clean up old blog_*.json files to avoid orphans
-            const existingFiles = fs.readdirSync(outputDir);
+            let blogList = [];
+
+            // 2. Extract dates from YAML frontmatter in each index.md
+            years.forEach(year => {
+              const yearPath = path.join(rootDir, year);
+              const uuids = fs.readdirSync(yearPath)
+                .filter(file => fs.statSync(path.join(yearPath, file)).isDirectory());
+              
+              uuids.forEach(uuid => {
+                const indexPath = path.join(yearPath, uuid, 'index.md');
+                
+                if (fs.existsSync(indexPath)) {
+                  const content = fs.readFileSync(indexPath, 'utf8');
+                  
+                  // Regex matches standard YAML format "date: YYYY-MM-DD" or "date: 'YYYY-MM-DD'"
+                  const dateMatch = content.match(/^date:\s*["']?([\d{4}-\d{2}-\d{2}])["']?/m);
+                  
+                  if (dateMatch && dateMatch[1]) {
+                    blogList.push({
+                      uuid: uuid,
+                      date: dateMatch[1].trim()
+                    });
+                  } else {
+                    // Fallback to year folder start date if metadata is missing
+                    blogList.push({
+                      uuid: uuid,
+                      date: `${year}-01-01`
+                    });
+                  }
+                }
+              });
+            });
+
+            // 3. Sort chronologically (Newest items first)
+            blogList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Extract sorted UUID strings array
+            const sortedUuids = blogList.map(item => item.uuid);
+
+            // 4. Clean up old blog_*.json arrays
+            const existingFiles = fs.readdirSync(rootDir);
             existingFiles.forEach(file => {
               if (file.startsWith('blog_') && file.endsWith('.json')) {
-                fs.unlinkSync(path.join(outputDir, file));
+                fs.unlinkSync(path.join(rootDir, file));
               }
             });
 
-            // 3. Create individual JSON files
-            for (let i = 0; i < files.length; i += pageSize) {
+            // 5. Output paginated raw array files [uuid1, uuid2, ...]
+            for (let i = 0; i < sortedUuids.length; i += pageSize) {
               const pageNum = Math.floor(i / pageSize) + 1;
               const fileName = `blog_${String(pageNum).padStart(5, '0')}.json`;
-              const pageData = files.slice(i, i + pageSize);
+              const pageData = sortedUuids.slice(i, i + pageSize);
               
               fs.writeFileSync(fileName, JSON.stringify(pageData, null, 2));
               console.log(`Created ${fileName} with ${pageData.length} entries.`);
